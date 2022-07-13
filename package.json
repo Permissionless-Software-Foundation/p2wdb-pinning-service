@@ -1,7 +1,7 @@
 {
-  "name": "ipfs-service-provider",
-  "version": "2.0.0",
-  "description": "A Koa-based combination of a REST API and IPFS JSON RPC. Boilerplate for starting new projects.",
+  "name": "p2wdb-pinning-service",
+  "version": "1.0.0",
+  "description": "A Koa-based REST API server. Monitors the P2WDB and pins IPFS files.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -18,17 +18,17 @@
   "author": "Chris Troutner <chris.troutner@gmail.com>",
   "license": "MIT",
   "apidoc": {
-    "title": "ipfs-service-provider",
+    "title": "p2wdb-pinning-service",
     "url": "localhost:5000"
   },
-  "repository": "Permissionless-Software-Foundation/ipfs-service-provider",
+  "repository": "Permissionless-Software-Foundation/p2wdb-pinning-service",
   "dependencies": {
     "@psf/bch-js": "6.4.1",
     "axios": "0.27.2",
     "bcryptjs": "2.4.3",
     "glob": "7.1.6",
     "ipfs": "0.62.3",
-    "ipfs-coord": "7.1.19",
+    "ipfs-coord": "8.0.2",
     "ipfs-http-client": "55.0.0",
     "jsonrpc-lite": "2.2.0",
     "jsonwebtoken": "8.5.1",
