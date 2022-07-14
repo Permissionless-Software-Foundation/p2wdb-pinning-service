@@ -41,8 +41,21 @@ class P2WDBRESTControllerLib {
       const cid = data.cid
       console.log(`Pinning CID: ${cid}`)
 
-      const retVal = await _this.adapters.ipfs.ipfs.pin.add(cid)
-      console.log('retVal: ', retVal)
+      const fileStats = await _this.adapters.ipfs.ipfs.files.stat(
+        `/ipfs/${cid}`
+      )
+      // console.log('fileStats: ', fileStats)
+
+      const fileSize = fileStats.cumulativeSize
+      console.log(`CID is ${fileSize} bytes is size.`)
+
+      const oneMegabyte = 1000000
+      if (fileSize < oneMegabyte) {
+        await _this.adapters.ipfs.ipfs.pin.add(cid)
+        console.log('File pinned successfully.')
+      } else {
+        console.log('File bigger than one megabyte. Not pinning.')
+      }
 
       // const dataType = ctx.request.body.data.dataType
       //
