@@ -11,6 +11,7 @@ const AuthRESTController = require('./auth')
 const UserRouter = require('./users')
 const ContactRESTController = require('./contact')
 const LogsRESTController = require('./logs')
+const P2WDBRouter = require('./p2wdb')
 
 class RESTControllers {
   constructor (localConfig = {}) {
@@ -52,6 +53,9 @@ class RESTControllers {
     // Attach the REST API Controllers associated with the /logs route
     const logsRESTController = new LogsRESTController(dependencies)
     logsRESTController.attach(app)
+
+    const p2wdbRouter = new P2WDBRouter(dependencies)
+    p2wdbRouter.attach(app)
   }
 }
 

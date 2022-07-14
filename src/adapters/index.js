@@ -16,6 +16,7 @@ const Nodemailer = require('./nodemailer')
 // const { wlogger } = require('./wlogger')
 const JSONFiles = require('./json-files')
 const FullStackJWT = require('./fullstack-jwt')
+const Webhook = require('./webhook')
 
 const config = require('../../config')
 
@@ -30,6 +31,7 @@ class Adapters {
     this.jsonFiles = new JSONFiles()
     this.bchjs = new BCHJS()
     this.config = config
+    this.webhook = new Webhook()
 
     // Get a valid JWT API key and instance bch-js.
     this.fullStackJwt = new FullStackJWT(config)
@@ -49,6 +51,8 @@ class Adapters {
       // Do not start these adapters if this is an e2e test.
       if (this.config.env !== 'test') {
         await this.ipfs.start()
+
+        await this.webhook.waitUntilSuccess(this.config.webhookTarget)
       }
 
       console.log('Async Adapters have been started.')

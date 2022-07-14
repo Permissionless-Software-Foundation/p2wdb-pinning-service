@@ -11,7 +11,7 @@
 // Global npm libraries
 // const IPFS = require('ipfs')
 // const IPFS = require('@chris.troutner/ipfs')
-const IPFSembedded = require('ipfs')
+// const IPFSembedded = require('ipfs')
 const IPFSexternal = require('ipfs-http-client')
 const fs = require('fs')
 const http = require('http')
@@ -19,7 +19,7 @@ const http = require('http')
 // Local libraries
 const config = require('../../../config')
 
-const IPFS_DIR = './.ipfsdata/ipfs'
+// const IPFS_DIR = './.ipfsdata/ipfs'
 
 class IpfsAdapter {
   constructor (localConfig) {
@@ -27,10 +27,10 @@ class IpfsAdapter {
     this.config = config
 
     // Choose the IPFS constructor based on the config settings.
-    this.IPFS = IPFSembedded // default
-    if (this.config.isProduction) {
-      this.IPFS = IPFSexternal
-    }
+    // this.IPFS = IPFSembedded // default
+    // if (this.config.isProduction) {
+    this.IPFS = IPFSexternal
+    // }
 
     // Properties of this class instance.
     this.isReady = false
@@ -42,36 +42,36 @@ class IpfsAdapter {
   async start () {
     try {
       // Ipfs Options
-      const ipfsOptionsEmbedded = {
-        repo: IPFS_DIR,
-        start: true,
-        config: {
-          relay: {
-            enabled: true, // enable circuit relay dialer and listener
-            hop: {
-              enabled: config.isCircuitRelay // enable circuit relay HOP (make this node a relay)
-            }
-          },
-          pubsub: true, // enable pubsub
-          Swarm: {
-            ConnMgr: {
-              HighWater: 30,
-              LowWater: 10
-            }
-          },
-          Addresses: {
-            Swarm: [
-              `/ip4/0.0.0.0/tcp/${this.config.ipfsTcpPort}`,
-              `/ip4/0.0.0.0/tcp/${this.config.ipfsWsPort}/ws`
-            ]
-          },
-          Datastore: {
-            StorageMax: '2GB',
-            StorageGCWatermark: 50,
-            GCPeriod: '15m'
-          }
-        }
-      }
+      // const ipfsOptionsEmbedded = {
+      //   repo: IPFS_DIR,
+      //   start: true,
+      //   config: {
+      //     relay: {
+      //       enabled: true, // enable circuit relay dialer and listener
+      //       hop: {
+      //         enabled: config.isCircuitRelay // enable circuit relay HOP (make this node a relay)
+      //       }
+      //     },
+      //     pubsub: true, // enable pubsub
+      //     Swarm: {
+      //       ConnMgr: {
+      //         HighWater: 30,
+      //         LowWater: 10
+      //       }
+      //     },
+      //     Addresses: {
+      //       Swarm: [
+      //         `/ip4/0.0.0.0/tcp/${this.config.ipfsTcpPort}`,
+      //         `/ip4/0.0.0.0/tcp/${this.config.ipfsWsPort}/ws`
+      //       ]
+      //     },
+      //     Datastore: {
+      //       StorageMax: '2GB',
+      //       StorageGCWatermark: 50,
+      //       GCPeriod: '15m'
+      //     }
+      //   }
+      // }
 
       const ipfsOptionsExternal = {
         host: this.config.ipfsHost,
@@ -79,10 +79,10 @@ class IpfsAdapter {
         agent: http.Agent({ keepAlive: true, maxSockets: 2000 })
       }
 
-      let ipfsOptions = ipfsOptionsEmbedded
-      if (this.config.isProduction) {
-        ipfsOptions = ipfsOptionsExternal
-      }
+      // let ipfsOptions = ipfsOptionsEmbedded
+      // if (this.config.isProduction) {
+      const ipfsOptions = ipfsOptionsExternal
+      // }
 
       // Create a new IPFS node.
       this.ipfs = await this.IPFS.create(ipfsOptions)
