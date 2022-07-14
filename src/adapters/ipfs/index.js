@@ -4,13 +4,13 @@
 
 // Local libraries
 const IpfsAdapter = require('./ipfs')
-const IpfsCoordAdapter = require('./ipfs-coord')
+// const IpfsCoordAdapter = require('./ipfs-coord')
 
 class IPFS {
   constructor (localConfig = {}) {
     // Encapsulate dependencies
     this.ipfsAdapter = new IpfsAdapter()
-    this.IpfsCoordAdapter = IpfsCoordAdapter
+    // this.IpfsCoordAdapter = IpfsCoordAdapter
     this.process = process
 
     this.ipfsCoordAdapter = {} // placeholder
@@ -31,14 +31,14 @@ class IPFS {
       this.ipfs = this.ipfsAdapter.ipfs
 
       // Start ipfs-coord
-      this.ipfsCoordAdapter = new this.IpfsCoordAdapter({
-        ipfs: this.ipfs
-      })
-      await this.ipfsCoordAdapter.start()
-      console.log('ipfs-coord is ready.')
+      // this.ipfsCoordAdapter = new this.IpfsCoordAdapter({
+      //   ipfs: this.ipfs
+      // })
+      // await this.ipfsCoordAdapter.start()
+      // console.log('ipfs-coord is ready.')
 
       // Subscribe to the chat pubsub channel
-      await this.ipfsCoordAdapter.subscribeToChat()
+      // await this.ipfsCoordAdapter.subscribeToChat()
 
       return true
     } catch (err) {

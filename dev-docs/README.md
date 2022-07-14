@@ -1,10 +1,18 @@
-# Developer Documentation
+# Developer Documentation for p2wdb-pinning-service
 
-This directory needs to be fleshed out with more information. The markdown files in this directory are intended to provide additional documentation for software developers that use this boilerplate to run their own forks.
+## Theory of Operation
+The p2wdb-pinning-service leverages the webhook feature of P2WDB:
 
-## Startup
-This software requires an IPFS node in order to operate the JSON RPC and ipfs-coord features. There are two ways to incorporate an IPFS node:
+- P2WDB now exists on the public IPFS network and is running well. This means the same node that maintains the P2WDB can be used to pin content.
 
-- js-ipfs is integrated into this repository. If you simply run `npm start`, then this app will default to the js-ipfs IPFS node. However, js-ipfs is not as full featured as go-ipfs. It has memory leaks and lags considerably behind go-ipfs in terms of features.
+- I'm going to fork ipfs-service-provider into p2wdb-pinning-service. It'll use the P2WDB app ID of 'p2wd-pin-001'.
 
-- go-ipfs is the preferred way to run a node. It can be run externally by following the guidence on the [IPFS homepage](https://ipfs.io). Once the IPFS node is running, this app can take control of it. Use the [local-external-ipfs-node.sh](../shell-scripts/local-external-ipfs-node.sh) shell script to start this app and attach it to the go-ipfs node.
+- p2wdb-pinning-service will run on top of the P2WDB. On startup, it will register a webhook with a local P2WDB instance. When new data enters the P2WDB with the app ID of 'p2wdb-pin-001', it will trigger the webhook and pass the data from the P2WDB instance to p2wdb-pinning-service.
+
+- The data will include a CID to be pinned, and metadata. The metadata will include the pinners estimate of the size of the file, the expected price in PSF for pinning, a proof of burn (for payment).
+
+- Each instance of p2wdb-pinning-service will evaluate the data and pin the CID if it passes. Default payment will be set at $0.01 per megabyte. The cost in PSF tokens will use the same token data that now sets the price of P2WDB writes.
+
+- Like the data in the P2WDB, new instances entering the network will ignore entries older than a year. So data will naturally fall off the network after about a year.
+
+- If this pinning service is popular enough, it can fund bounties to encourage people to run more instances of p2wdb-pinning-service.

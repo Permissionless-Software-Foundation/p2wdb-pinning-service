@@ -15,7 +15,7 @@ const ipfsCoordName = process.env.COORD_NAME
 
 module.exports = {
   // Configure TCP port.
-  port: process.env.PORT || 5001,
+  port: process.env.PORT || 5021,
 
   // Password for HTML UI that displays logs.
   logPass: 'test',
@@ -87,5 +87,11 @@ module.exports = {
     ? parseInt(process.env.IPFS_API_PORT)
     : 5001,
 
-  chatPubSubChan: 'psf-ipfs-chat-001'
+  chatPubSubChan: 'psf-ipfs-chat-001',
+
+  p2wdbAppId: 'p2wdb-pin-001',
+  webhookService: process.env.WEBHOOKSERVICE ? process.env.WEBHOOKSERVICE : 'http://localhost:5010/webhook',
+  webhookTarget: process.env.WEBHOOKTARGET
+    ? process.env.WEBHOOKTARGET
+    : 'http://localhost:5021/p2wdb'
 }
