@@ -14,7 +14,7 @@ services:
     restart: always
 
   ipfs:
-    image: ipfs/go-ipfs:v0.14.0
+    image: odanado/go-ipfs:v0.11.0
     container_name: ipfs
     environment:
       MY_ENV_VAR: 'placeholder'
@@ -46,7 +46,7 @@ services:
     #build:
     #  context: ./p2wdb/
     #  dockerfile: Dockerfile
-    image: christroutner/p2wdb:v3.0.6
+    image: christroutner/p2wdb-rpi-v3.0.6
     container_name: p2wdb
     environment:
       CONSUMER_URL: 'https://free-bch.fullstack.cash'
@@ -59,7 +59,6 @@ services:
     mem_limit: 1gb
     links:
       - mongo-pin-service
-      - ipfs
     ports:
       # <host port>:<container port>
       - 5667:5667 # REST API
@@ -71,7 +70,7 @@ services:
     restart: always
 
   pin-service:
-    build: ./pin-service/
+    build: .
     #image: christroutner/ipfs-service-provider:v2.2.1
     container_name: pin-service
     logging:
@@ -86,5 +85,6 @@ services:
     ports:
       - '5010:5010' # <host port>:<container port>
     volumes:
-      - ./pin-service/start-production.sh:/home/safeuser/p2wdb-pinning-service/start-production.sh
+      - ../data/ipfsdata:/home/safeuser/p2wdb-pinning-service/.ipfsdata
+      - ./start-production.sh:/home/safeuser/p2wdb-pinning-service/start-production.sh
     restart: always

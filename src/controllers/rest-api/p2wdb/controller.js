@@ -36,6 +36,17 @@ class P2WDBRESTControllerLib {
     try {
       console.log('p2wdb REST API handler: body: ', ctx.request.body)
 
+      /*
+      p2wdb REST API handler: body:  {
+        appId: 'p2wdb-pin-001',
+        data: '{"cid": "bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta"}',
+        timestamp: '2022-07-24T13:37:06.276Z',
+        localTimeStamp: '7/24/2022, 6:37:06 AM',
+        txid: 'c67a7caaad81d7e666f378417ac095556fb8c7b6c0d77e384b49da9601021263',
+        hash: 'zdpuB3PUQkecrHQB64fyFjLtXAyn8uiygHBieFosiv3jTBNK9'
+      }
+      */
+
       const data = JSON.parse(ctx.request.body.data)
 
       const cid = data.cid
@@ -50,11 +61,11 @@ class P2WDBRESTControllerLib {
       console.log(`CID is ${fileSize} bytes is size.`)
 
       const oneMegabyte = 1000000
-      if (fileSize < oneMegabyte) {
+      if (fileSize < oneMegabyte * 10) {
         await _this.adapters.ipfs.ipfs.pin.add(cid)
         console.log('File pinned successfully.')
       } else {
-        console.log('File bigger than one megabyte. Not pinning.')
+        console.log('File bigger than ten megabytes. Not pinning.')
       }
 
       // const dataType = ctx.request.body.data.dataType

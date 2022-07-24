@@ -1,15 +1,8 @@
 # Examples
 
-Below are a series of JSON RPC calls that can be manually entered at chat.fullstack.cash to interact with the JSON RPC of this IPFS Service Provider.
+This directory will contain code examples for working with this program.
 
-- `{"jsonrpc":"2.0","id":"555","method":"users","params":{ "endpoint": "createUser", "email": "test555@test.com", "name": "testy tester", "password": "password"}}`<br />
+## psf-bch-wallet
+These commands can be used with psf-bch-wallet to pin files using this service:
 
-- `{"jsonrpc":"2.0","id":"556","method":"auth","params":{ "endpoint": "authUser", "login": "test555@test.com", "password": "password"}}`<br />
-
-- `{"jsonrpc":"2.0","id":"123","method":"users","params":{ "endpoint": "getAllUsers", "apiToken": "<JWT>"}}`<br />
-
-- `{"jsonrpc":"2.0","id":"123","method":"users","params":{ "endpoint": "updateUser", "apiToken": "<JWT>", "userId": "<_id>", "name": "test999"}}`<br />
-
-- `{"jsonrpc":"2.0","id":"123","method":"users","params":{ "endpoint": "getUser", "apiToken": "<JWT>", "userId": "<_id>"}}`<br />
-
-- `{"jsonrpc":"2.0","id":"123","method":"users","params":{ "endpoint": "deleteUser", "userId": "<_id>", "apiToken": "<JWT>"}}`
+`./bin/run p2wdb-write -n test01 -a p2wdb-pin-001 -d '{"cid": "bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta"}'`
