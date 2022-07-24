@@ -3,9 +3,9 @@
 version: '3.9'
 
 services:
-  mongo-ipfs-service:
+  mongo-pin-service:
     image: mongo
-    container_name: mongo-ipfs-service
+    container_name: mongo-pin-service
     ports:
       - '5555:27017' # <host port>:<container port>
     volumes:
@@ -58,7 +58,7 @@ services:
         max-file: '10'
     mem_limit: 1gb
     links:
-      - mongo-bch-dex
+      - mongo-pin-service
     ports:
       # <host port>:<container port>
       - 5667:5667 # REST API
@@ -80,7 +80,7 @@ services:
         max-file: '10'
     mem_limit: 500mb
     links:
-      - mongo-ipfs-service
+      - mongo-pin-service
       - p2wdb
     ports:
       - '5010:5010' # <host port>:<container port>
