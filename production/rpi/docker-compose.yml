@@ -4,7 +4,7 @@ version: '3.9'
 
 services:
   mongo-pin-service:
-    image: mongo
+    image: mongo:4.2.0
     container_name: mongo-pin-service
     ports:
       - '5555:27017' # <host port>:<container port>
