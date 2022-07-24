@@ -29,7 +29,8 @@ export DBURL=mongodb://172.17.0.1:5555/ipfs-service-prod
 export PORT=5010
 
 # Production settings using external go-ipfs node.
-export SVC_ENV=production
+#export SVC_ENV=production
+export SVC_ENV=development
 export IPFS_HOST=172.17.0.1
 export IPFS_API_PORT=5001
 export IPFS_TCP_PORT=4001
