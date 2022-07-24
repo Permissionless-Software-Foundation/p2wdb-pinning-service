@@ -35,4 +35,8 @@ export IPFS_API_PORT=5001
 export IPFS_TCP_PORT=4001
 #export IPFS_WS_PORT=5269
 
+# pinning-service specific ports
+export WEBHOOKSERVICE=http://172.17.0.1:5667/webhook
+export WEBHOOKTARGET=http://172.17.0.1:5010/p2wdb
+
 npm start
