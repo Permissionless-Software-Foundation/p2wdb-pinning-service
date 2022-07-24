@@ -53,5 +53,40 @@ describe('#users-use-case', () => {
 
       assert.equal(result, true)
     })
+
+    it('should return false for a CID with a large file size', async () => {
+      const cid = 'bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta'
+
+      sandbox.stub(uut.adapters.ipfs.ipfs.files, 'stat').resolves({ cumulativeSize: 27300000000 })
+
+      const result = await uut.validateCid(cid)
+
+      assert.equal(result, false)
+    })
+  })
+
+  describe('#pinCid', () => {
+    it('should return false if file is too big', async () => {
+      const cid = 'bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta'
+
+      // Mock dependencies
+      sandbox.stub(uut, 'validateCid').resolves(false)
+
+      const result = await uut.pinCid(cid)
+
+      assert.equal(result, false)
+    })
+
+    it('should return true if file is successfully pinned', async () => {
+      const cid = 'bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta'
+
+      // Mock dependencies
+      sandbox.stub(uut, 'validateCid').resolves(true)
+      sandbox.stub(uut.adapters.ipfs.ipfs.pin, 'add').resolves()
+
+      const result = await uut.pinCid(cid)
+
+      assert.equal(result, true)
+    })
   })
 })

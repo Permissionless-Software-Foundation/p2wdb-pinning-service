@@ -63,6 +63,8 @@ class PinUseCases {
       if (fileSize < oneMegabyte * 10) {
         return true
       }
+
+      return false
     } catch (err) {
       console.error('Error in validateCid()')
       throw err
