@@ -14,7 +14,7 @@ services:
     restart: always
 
   ipfs:
-    image: ipfs/go-ipfs:v0.13.0
+    image: odanado/go-ipfs:v0.11.0
     container_name: ipfs
     environment:
       MY_ENV_VAR: 'placeholder'
@@ -30,7 +30,7 @@ services:
       - 172.17.0.1:8080:8080
     volumes:
       - ../data/go-ipfs/data:/data/ipfs
-      - ../../swarm.key:/data/ipfs/swarm.key
+      #- ../../swarm.key:/data/ipfs/swarm.key
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#command
     # https://github.com/ipfs/go-ipfs/blob/91c52657166bcf86f2476926e4fe56694dc26562/Dockerfile#L115
     command:
@@ -42,10 +42,37 @@ services:
       ]
     restart: always
 
-  ipfs-service:
+  p2wdb:
+    #build:
+    #  context: ./p2wdb/
+    #  dockerfile: Dockerfile
+    image: christroutner/p2wdb-rpi-v3.0.6
+    container_name: p2wdb
+    environment:
+      CONSUMER_URL: 'https://free-bch.fullstack.cash'
+      DEBUG_LEVEL: 1
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '10'
+    mem_limit: 1gb
+    links:
+      - mongo-bch-dex
+    ports:
+      # <host port>:<container port>
+      - 5667:5667 # REST API
+      #- 5668:5668 # IPFS TCP port
+      #- 5669:5669 # IPFS WS Port
+    volumes:
+      - ../data/ipfsdata/p2wdb:/home/safeuser/ipfs-p2wdb-service/.ipfsdata/p2wdb
+      - ./p2wdb/start-production.sh:/home/safeuser/ipfs-p2wdb-service/start-production.sh
+    restart: always
+
+  pin-service:
     build: .
     #image: christroutner/ipfs-service-provider:v2.2.1
-    container_name: ipfs-service
+    container_name: pin-service
     logging:
       driver: 'json-file'
       options:
@@ -54,7 +81,7 @@ services:
     mem_limit: 500mb
     links:
       - mongo-ipfs-service
-      - ipfs
+      - p2wdb
     ports:
       - '5010:5010' # <host port>:<container port>
     volumes:
