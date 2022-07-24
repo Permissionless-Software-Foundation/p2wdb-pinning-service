@@ -3,9 +3,9 @@
 version: '3.9'
 
 services:
-  mongo-ipfs-service:
-    image: mongo
-    container_name: mongo-ipfs-service
+  mongo-pin-service:
+    image: mongo:4.2.0
+    container_name: mongo-pin-service
     ports:
       - '5555:27017' # <host port>:<container port>
     volumes:
@@ -58,7 +58,7 @@ services:
         max-file: '10'
     mem_limit: 1gb
     links:
-      - mongo-p2wdb-service
+      - mongo-pin-service
       - ipfs
     ports:
       # <host port>:<container port>
@@ -70,10 +70,10 @@ services:
       - ./p2wdb/start-production.sh:/home/safeuser/ipfs-p2wdb-service/start-production.sh
     restart: always
 
-  ipfs-service:
-    #build: .
-    image: christroutner/ipfs-service-provider:v2.2.1
-    container_name: ipfs-service
+  pin-service:
+    build: ./pin-service/
+    #image: christroutner/ipfs-service-provider:v2.2.1
+    container_name: pin-service
     logging:
       driver: 'json-file'
       options:
@@ -81,10 +81,10 @@ services:
         max-file: '10'
     mem_limit: 500mb
     links:
-      - mongo-ipfs-service
-      - ipfs
+      - mongo-pin-service
+      - p2wdb
     ports:
       - '5010:5010' # <host port>:<container port>
     volumes:
-      - ../data/ipfsdata:/home/safeuser/ipfs-service-provider/.ipfsdata
+      - ./pin-service/start-production.sh:/home/safeuser/p2wdb-pinning-service/start-production.sh
     restart: always
