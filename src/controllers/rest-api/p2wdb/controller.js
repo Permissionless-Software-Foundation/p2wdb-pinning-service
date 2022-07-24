@@ -50,11 +50,11 @@ class P2WDBRESTControllerLib {
       console.log(`CID is ${fileSize} bytes is size.`)
 
       const oneMegabyte = 1000000
-      if (fileSize < oneMegabyte) {
+      if (fileSize < oneMegabyte * 10) {
         await _this.adapters.ipfs.ipfs.pin.add(cid)
         console.log('File pinned successfully.')
       } else {
-        console.log('File bigger than one megabyte. Not pinning.')
+        console.log('File bigger than ten megabytes. Not pinning.')
       }
 
       // const dataType = ctx.request.body.data.dataType
