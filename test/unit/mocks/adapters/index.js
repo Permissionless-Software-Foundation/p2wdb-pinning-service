@@ -4,7 +4,11 @@
 
 const ipfs = {
   ipfsAdapter: {
-    ipfs: {}
+    ipfs: {
+      files: {
+        stat: () => {}
+      }
+    }
   },
   ipfsCoordAdapter: {
     ipfsCoord: {

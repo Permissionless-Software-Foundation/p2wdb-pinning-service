@@ -5,6 +5,7 @@
 */
 
 const UserUseCases = require('./user')
+const PinUseCases = require('./pin')
 
 class UseCases {
   constructor (localConfig = {}) {
@@ -17,6 +18,7 @@ class UseCases {
 
     // console.log('use-cases/index.js localConfig: ', localConfig)
     this.user = new UserUseCases(localConfig)
+    this.pin = new PinUseCases(localConfig)
   }
 
   // Run any startup Use Cases at the start of the app.
