@@ -29,7 +29,7 @@ class PinUseCases {
         return true
       }
 
-      console.log('File bigger than ten megabytes. Not pinning.')
+      console.log('File bigger than a megabyte. Not pinning.')
       return false
     } catch (err) {
       console.error('Error in pinCid()')
@@ -60,7 +60,7 @@ class PinUseCases {
 
       const oneMegabyte = 1000000
 
-      if (fileSize < oneMegabyte * 10) {
+      if (fileSize < oneMegabyte) {
         return true
       }
 

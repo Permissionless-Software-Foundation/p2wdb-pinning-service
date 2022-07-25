@@ -1,0 +1,21 @@
+{
+  "RelayV2": {
+    "Enabled": false
+  },
+  "RelayV1": {
+    "Enabled": true
+  },
+  "Network": {
+    "ListenAddrs": [
+        "/ip4/0.0.0.0/udp/4102/quic",
+        "/ip6/::/udp/4102/quic",
+        "/ip4/0.0.0.0/tcp/4102",
+        "/ip6/::/tcp/4102",
+        "/ip4/0.0.0.0/tcp/4103/ws",
+        "/ip6/::/tcp/4103/ws"
+    ]
+  },
+  "Daemon": {
+    "PprofPort": 6061
+  }
+}

@@ -70,6 +70,28 @@ services:
       - ./p2wdb/start-production.sh:/home/safeuser/ipfs-p2wdb-service/start-production.sh
     restart: always
 
+  circuit-relay-v1:
+    #build: .
+    image: christroutner/circuit-relay-v1:v1.0.0
+    container_name: circuit-relay-v1
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '10'
+    mem_limit: 1gb
+    environment:
+      MY_ENV_VAR: 'placeholder'
+    #links:
+    #  - p2wdb-mongodb
+    ports:
+      # <host port>:<container port>
+      - 4102:4102 # TCP
+      - 4103:4103 # Websockets
+    volumes:
+      - ./relay-config:/root/go/bin/relay-config
+    restart: always
+
   pin-service:
     build: ./pin-service/
     #image: christroutner/ipfs-service-provider:v2.2.1
