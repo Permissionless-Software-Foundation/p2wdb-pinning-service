@@ -11,6 +11,12 @@ Pinning fees are paid in [PSF tokens](https://psfoundation.cash). The price of p
 
 Like data on the P2WDB, they slowly fall off the network after a year. So data is guaranteed to be pinned by nodes on the network for at least one year.
 
+## Usage
+
+This service will pin an IPFS CID when the appropriate command is written to the P2WDB. Using [psf-bch-wallet](https://github.com/Permissionless-Software-Foundation/psf-bch-wallet), this command can be used to pin content:
+
+`./bin/run p2wdb-write -n test01 -a p2wdb-pin-001 -d '{"cid": "bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta"}'`
+
 ## Production
 
 The pinning service is operated by members of the [PSF](https://psfoundation.cash), who are paid for their efforts through [bounties](https://github.com/Permissionless-Software-Foundation/bounties). The software is composed of several Docker containers:
