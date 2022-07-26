@@ -26,6 +26,7 @@ services:
     mem_limit: 2000mb
     ports:
       - 4001:4001
+      - 4003:4003
       - 172.17.0.1:5001:5001
       - 172.17.0.1:8080:8080
     volumes:
@@ -43,10 +44,10 @@ services:
     restart: always
 
   p2wdb:
-    #build:
-    #  context: ./p2wdb/
-    #  dockerfile: Dockerfile
-    image: christroutner/p2wdb:v3.0.6
+    build:
+      context: ./p2wdb/
+      dockerfile: Dockerfile
+    #image: christroutner/p2wdb:v3.0.8
     container_name: p2wdb
     environment:
       CONSUMER_URL: 'https://free-bch.fullstack.cash'
@@ -68,6 +69,31 @@ services:
     volumes:
       - ../data/ipfsdata/p2wdb:/home/safeuser/ipfs-p2wdb-service/.ipfsdata/p2wdb
       - ./p2wdb/start-production.sh:/home/safeuser/ipfs-p2wdb-service/start-production.sh
+    restart: always
+
+  # (Optional) This contain can be commented out. It provides v1 Circuit Relay
+  # services for creating tunnels through firewalls and passing files through
+  # them.
+  circuit-relay-v1:
+    #build: .
+    image: christroutner/circuit-relay-v1:v1.0.0
+    container_name: circuit-relay-v1
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '10'
+    mem_limit: 1gb
+    environment:
+      MY_ENV_VAR: 'placeholder'
+    #links:
+    #  - p2wdb-mongodb
+    ports:
+      # <host port>:<container port>
+      - 4102:4102 # TCP
+      - 4103:4103 # Websockets
+    volumes:
+      - ./v1-relay/relay-config:/root/go/bin/relay-config
     restart: always
 
   pin-service:
