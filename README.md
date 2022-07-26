@@ -11,6 +11,15 @@ Pinning fees are paid in [PSF tokens](https://psfoundation.cash). The price of p
 
 Like data on the P2WDB, they slowly fall off the network after a year. So data is guaranteed to be pinned by nodes on the network for at least one year.
 
+## Production
+
+The pinning service is operated by members of the [PSF](https://psfoundation.cash), who are paid for their efforts through [bounties](https://github.com/Permissionless-Software-Foundation/bounties). The software is composed of several Docker containers:
+
+- **ipfs** - An instance of go-ipfs (kubo).
+- **mongo** - An instance of the Mongo Database.
+- **p2wdb** - An instance of the pay-to-write database (P2WDB).
+- **pin-service** - The code in this repository compiled into a Docker container.
+- **circuit-relay-v1** - A V1 Circuit Relay. This is used to punch holes through firewalls for the purpose of file sharing. See [this thread](https://discuss.ipfs.io/t/roadmap-for-circuit-relay-v2-file-transfer/14713/3) for more info.
 
 
 ## License
