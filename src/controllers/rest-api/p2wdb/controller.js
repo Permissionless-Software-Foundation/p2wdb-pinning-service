@@ -34,7 +34,7 @@ class P2WDBRESTControllerLib {
   // No api-doc documentation because this wont be a public endpoint
   async routeWebhook (ctx) {
     try {
-      console.log('p2wdb REST API handler: body: ', ctx.request.body)
+      console.log('p2wdb REST API handler body: ', ctx.request.body)
       /*
       Example output:
 
@@ -48,7 +48,13 @@ class P2WDBRESTControllerLib {
       }
       */
 
-      const data = JSON.parse(ctx.request.body.data)
+      let data
+      try {
+        data = JSON.parse(ctx.request.body.data)
+      } catch(err) {
+        data = ctx.request.body.data
+      }
+
 
       const cid = data.cid
 
