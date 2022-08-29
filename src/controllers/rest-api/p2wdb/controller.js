@@ -51,10 +51,9 @@ class P2WDBRESTControllerLib {
       let data
       try {
         data = JSON.parse(ctx.request.body.data)
-      } catch(err) {
+      } catch (err) {
         data = ctx.request.body.data
       }
-
 
       const cid = data.cid
 
