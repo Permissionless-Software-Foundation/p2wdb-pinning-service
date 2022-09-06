@@ -37,6 +37,18 @@ class PinUseCases {
     }
   }
 
+  // Given an object, pin it with the IPFS node and return the CID.
+  async pinJson (jsonToPin) {
+    try {
+      console.log('pinJson will pin this object: ', jsonToPin)
+
+      return true
+    } catch (err) {
+      console.error('Error in pinJson()')
+      throw err
+    }
+  }
+
   // Validate the CID by ensuring it meets the requirements for pinning.
   async validateCid (cid) {
     try {

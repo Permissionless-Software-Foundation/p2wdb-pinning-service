@@ -36,11 +36,22 @@ class P2WDBRESTControllerLib {
     try {
       console.log('p2wdb REST API handler body: ', ctx.request.body)
       /*
-      Example output:
+      Example output for pinning a CID:
 
       p2wdb REST API handler: body:  {
         appId: 'p2wdb-pin-001',
         data: '{"cid": "bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta"}',
+        timestamp: '2022-07-24T13:37:06.276Z',
+        localTimeStamp: '7/24/2022, 6:37:06 AM',
+        txid: 'c67a7caaad81d7e666f378417ac095556fb8c7b6c0d77e384b49da9601021263',
+        hash: 'zdpuB3PUQkecrHQB64fyFjLtXAyn8uiygHBieFosiv3jTBNK9'
+      }
+
+      Example output for pinning a JSON object:
+
+      p2wdb REST API handler: body:  {
+        appId: 'p2wdb-pin-001',
+        data: '{"jsonToPin": "{'a': 'b'}"}',
         timestamp: '2022-07-24T13:37:06.276Z',
         localTimeStamp: '7/24/2022, 6:37:06 AM',
         txid: 'c67a7caaad81d7e666f378417ac095556fb8c7b6c0d77e384b49da9601021263',
@@ -55,9 +66,20 @@ class P2WDBRESTControllerLib {
         data = ctx.request.body.data
       }
 
-      const cid = data.cid
+      let status = false
 
-      const status = await _this.useCases.pin.pinCid(cid)
+      // Handle CID pinning.
+      if (data.cid) {
+        const cid = data.cid
+
+        status = await _this.useCases.pin.pinCid(cid)
+      } else if (data.jsonToPin) {
+        console.log('Pinning this JSON object: ', data.jsonToPin)
+
+        status = await _this.useCases.pin.pinJson(data.jsonToPin)
+      } else {
+        throw new Error('Input data does not have a cid or jsonToPin property. This app does not know how to process this data.')
+      }
 
       ctx.body = {
         success: status
