@@ -3,12 +3,13 @@
 */
 
 // Public npm libraries
-const assert = require('chai').assert
-const sinon = require('sinon')
+import { assert } from 'chai'
+import sinon from 'sinon'
 
 // Local support libraries
-const PinLib = require('../../../src/use-cases/pin')
-const adapters = require('../mocks/adapters')
+import PinLib from '../../../src/use-cases/pin.js'
+
+import adapters from '../mocks/adapters/index.js'
 
 describe('#users-use-case', () => {
   let uut

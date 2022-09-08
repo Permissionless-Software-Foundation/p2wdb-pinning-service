@@ -4,10 +4,10 @@
 */
 
 // Public npm libraries.
-const Router = require('koa-router')
+import Router from 'koa-router'
 
 // Local libraries.
-const PinJsonRESTControllerLib = require('./controller')
+import PinJsonRESTControllerLib from './controller.js'
 
 class PinJsonRouter {
   constructor (localConfig = {}) {
@@ -54,4 +54,4 @@ class PinJsonRouter {
   }
 }
 
-module.exports = PinJsonRouter
+export default PinJsonRouter

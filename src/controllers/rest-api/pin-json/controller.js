@@ -5,7 +5,7 @@
 */
 
 // Global npm libraries
-const axios = require('axios')
+import axios from 'axios'
 // const { File } = require('web3.storage')
 
 // const { wlogger } = require('../../../adapters/wlogger')
@@ -178,4 +178,4 @@ class PinJsonRESTControllerLib {
   }
 }
 
-module.exports = PinJsonRESTControllerLib
+export default PinJsonRESTControllerLib

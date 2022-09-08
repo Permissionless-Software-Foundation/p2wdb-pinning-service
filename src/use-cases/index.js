@@ -4,8 +4,8 @@
   https://troutsblog.com/blog/clean-architecture
 */
 
-const UserUseCases = require('./user')
-const PinUseCases = require('./pin')
+import UserUseCases from './user.js'
+import PinUseCases from './pin.js'
 
 class UseCases {
   constructor (localConfig = {}) {
@@ -35,4 +35,4 @@ class UseCases {
   }
 }
 
-module.exports = UseCases
+export default UseCases

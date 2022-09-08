@@ -84,4 +84,4 @@ class PinUseCases {
   }
 }
 
-module.exports = PinUseCases
+export default PinUseCases

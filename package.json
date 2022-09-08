@@ -1,8 +1,9 @@
 {
   "name": "p2wdb-pinning-service",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A Koa-based REST API server. Monitors the P2WDB and pins IPFS files.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "npm run test:all",
@@ -23,13 +24,11 @@
   },
   "repository": "Permissionless-Software-Foundation/p2wdb-pinning-service",
   "dependencies": {
-    "@psf/bch-js": "6.4.5",
     "axios": "0.27.2",
     "bcryptjs": "2.4.3",
     "glob": "7.1.6",
-    "ipfs": "0.62.3",
-    "ipfs-coord": "8.0.5",
-    "ipfs-http-client": "55.0.0",
+    "ipfs-coord-esm": "9.1.1",
+    "ipfs-http-client": "58.0.0",
     "jsonrpc-lite": "2.2.0",
     "jsonwebtoken": "8.5.1",
     "jwt-bch-lib": "1.3.0",
@@ -45,6 +44,7 @@
     "koa-static": "5.0.0",
     "koa2-ratelimit": "0.9.1",
     "line-reader": "0.4.0",
+    "minimal-slp-wallet": "5.0.3",
     "mongoose": "5.13.14",
     "node-fetch": "npm:@achingbrain/node-fetch@2.6.7",
     "nodemailer": "6.7.5",
@@ -62,7 +62,7 @@
     "nyc": "15.1.0",
     "semantic-release": "19.0.3",
     "sinon": "9.2.4",
-    "standard": "16.0.3",
+    "standard": "17.0.0",
     "uuid": "8.3.2"
   },
   "release": {
