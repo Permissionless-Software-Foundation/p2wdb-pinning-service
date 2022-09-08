@@ -12,6 +12,7 @@ const UserRouter = require('./users')
 const ContactRESTController = require('./contact')
 const LogsRESTController = require('./logs')
 const P2WDBRouter = require('./p2wdb')
+const PinJsonRouter = require('./pin-json')
 
 class RESTControllers {
   constructor (localConfig = {}) {
@@ -56,6 +57,9 @@ class RESTControllers {
 
     const p2wdbRouter = new P2WDBRouter(dependencies)
     p2wdbRouter.attach(app)
+
+    const pinJsonRouter = new PinJsonRouter(dependencies)
+    pinJsonRouter.attach(app)
   }
 }
 
