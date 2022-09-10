@@ -10,6 +10,11 @@ import axios from 'axios'
 
 // const { wlogger } = require('../../../adapters/wlogger')
 
+// Hack to get __dirname back.
+// https://blog.logrocket.com/alternatives-dirname-node-js-es-modules/
+// import * as url from 'url'
+// const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+
 class PinJsonRESTControllerLib {
   constructor (localConfig = {}) {
     // Dependency Injection.
@@ -43,11 +48,11 @@ class PinJsonRESTControllerLib {
     try {
       console.log('pin-json REST API handler body: ', ctx.request.body)
       /*
-      Example output for pinning a JSON object:
+        Example input for pinning a JSON object:
 
-      typical body:  {
-        zcid: 'zdpuAqc2yMsrdM39gDyhhoCSPpoceGjaTJforddKhaGjBjVUD'
-      }
+        typical body:  {
+          zcid: 'zdpuAqc2yMsrdM39gDyhhoCSPpoceGjaTJforddKhaGjBjVUD'
+        }
       */
 
       const zcid = ctx.request.body.zcid
@@ -68,89 +73,41 @@ class PinJsonRESTControllerLib {
       const data = entry.value.data
 
       // Convert the data from a string to JSON
-      const entry2 = JSON.parse(data)
-      console.log('entry2: ', entry2)
+      let entry2
+      try {
+        entry2 = JSON.parse(data)
+        console.log('entry2: ', entry2)
+      } catch (err) {
+        throw new Error('Could not parse P2WDB entry into a JSON object.')
+      }
 
       // Isolate the raw data
       const rawData = entry2.data
       console.log('rawData: ', rawData)
 
-      // Convert the object to a string
-      // const objString = JSON.stringify(rawData)
-      // console.log('objString: ', objString)
-
-      // Convert the string to a buffer.
-      // const bufferedStr = Buffer.from(objString)
-      // console.log('bufferedStr: ', bufferedStr)
-
-      // console.log('this.adapters.ipfs.ipfs: ', this.adapters.ipfs.ipfs)
-
+      // Create a FileObject
       // https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/FILES.md#ipfsadddata-options
-      // const fileObj = {
-      //   path: '/',
-      //   content: objString
-      // }
-      // console.log('fileObj: ', fileObj)
+      const file = {
+        path: '/data.json',
+        content: JSON.stringify(rawData)
+      }
 
-      // const file = {
-      //   path: '/tmp/myfile.txt',
-      //   content: 'ABC'
-      // }
+      const addOptions = {
+        cidVersion: 1,
+        wrapWithDirectory: true
+      }
 
-      // console.log(`__dirname: ${__dirname}`)
-      const path = `${__dirname.toString()}/test.json`
-
-      // const testJson = {
-      //   a: 'b',
-      //   foo: 'bar',
-      //   c: 4
-      // }
-      //
-      // const objString = JSON.stringify(testJson)
-      // const bufferedStr = Buffer.from(objString)
-      //
-      // const file = {
-      //   path: '/',
-      //   content: bufferedStr
-      // }
-      // const bufferedFile = Buffer.from(JSON.stringify(file))
-
-      // const buffer = Buffer.from(JSON.stringify(testJson))
-
-      // const file = [new File([buffer], 'data.json')]
-
-      // Add the buffer to IPFS.
-      const ipfsResult = await this.adapters.ipfs.ipfs.pin.add(path)
+      // Add the file to IPFS.
+      const ipfsResult = await this.adapters.ipfs.ipfs.add(file, addOptions)
       console.log('ipfsResult: ', ipfsResult)
 
-      // const cid = ipfsResult.path
-
-      // return cid
-
-      // let data
-      // try {
-      //   data = JSON.parse(ctx.request.body.data)
-      // } catch (err) {
-      //   data = ctx.request.body.data
-      // }
+      const cid = ipfsResult.cid.toString()
 
       const status = true
-      //
-      // // Handle CID pinning.
-      // if (data.cid) {
-      //   const cid = data.cid
-      //
-      //   status = await _this.useCases.pin.pinCid(cid)
-      // } else if (data.jsonToPin) {
-      //   console.log('Pinning this JSON object: ', data.jsonToPin)
-      //
-      //   status = await _this.useCases.pin.pinJson(data.jsonToPin)
-      // } else {
-      //   throw new Error('Input data does not have a cid or jsonToPin property. This app does not know how to process this data.')
-      // }
 
       ctx.body = {
-        success: status
+        success: status,
+        cid
       }
     } catch (err) {
       // console.log(`err.message: ${err.message}`)
