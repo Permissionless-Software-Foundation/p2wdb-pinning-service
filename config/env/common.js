@@ -95,5 +95,9 @@ export default {
   webhookService: process.env.WEBHOOKSERVICE ? process.env.WEBHOOKSERVICE : 'http://localhost:5010/webhook',
   webhookTarget: process.env.WEBHOOKTARGET
     ? process.env.WEBHOOKTARGET
-    : 'http://localhost:5021/p2wdb'
+    : 'http://localhost:5021/p2wdb',
+
+  // Used by pinning service.
+  // Assuming this is running in a Docker container.
+  p2wdbServerUrl: process.env.P2WDB_SERVER_URL ? process.env.P2WDB_SERVER_URL : 'https://p2wdb.fullstack.cash'
 }

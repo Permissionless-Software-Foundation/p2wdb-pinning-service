@@ -6,7 +6,9 @@
 
 // Global npm libraries
 import axios from 'axios'
-// const { File } = require('web3.storage')
+
+// Local libraries
+import config from '../../../../config/index.js'
 
 // const { wlogger } = require('../../../adapters/wlogger')
 
@@ -31,7 +33,8 @@ class PinJsonRESTControllerLib {
       )
     }
 
-    this.serverURL = 'http://localhost:5010'
+    // this.serverURL = 'http://localhost:5010'
+    this.serverURL = config.p2wdbServerUrl
 
     // Encapsulate dependencies
     // this.OrderModel = this.adapters.localdb.Order
