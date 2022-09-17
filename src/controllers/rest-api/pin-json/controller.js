@@ -6,6 +6,7 @@
 
 // Global npm libraries
 import axios from 'axios'
+import RetryQueue from '@chris.troutner/retry-queue'
 
 // Local libraries
 import config from '../../../../config/index.js'
@@ -37,13 +38,13 @@ class PinJsonRESTControllerLib {
     this.serverURL = config.p2wdbServerUrl
 
     // Encapsulate dependencies
-    // this.OrderModel = this.adapters.localdb.Order
-    // this.userUseCases = this.useCases.user
     this.axios = axios
+    this.retryQueue = new RetryQueue()
 
     // bind 'this' object to event handlers
     this.handleError = this.handleError.bind(this)
     this.routeWebhook = this.routeWebhook.bind(this)
+    this.getJsonFromP2wdb = this.getJsonFromP2wdb.bind(this)
   }
 
   // No api-doc documentation because this wont be a public endpoint
@@ -63,17 +64,8 @@ class PinJsonRESTControllerLib {
         throw new Error('P2WDB CID must be included with property zcid')
       }
 
-      // Get the entry from the P2WDB.
-      const options = {
-        method: 'GET',
-        url: `${this.serverURL}/entry/hash/${zcid}`
-      }
-      const result = await this.axios.request(options)
-      const entry = result.data.data
-      console.log('entry: ', entry)
-
-      // Isolate the data.
-      const data = entry.value.data
+      // Get the entry from the P2WDB. Automatically retry if it fails.
+      const data = await this.retryQueue.addToQueue(this.getJsonFromP2wdb, { zcid })
 
       // Convert the data from a string to JSON
       let entry2
@@ -118,6 +110,28 @@ class PinJsonRESTControllerLib {
       // ctx.throw(422, err.message)
       this.handleError(ctx, err)
     }
+  }
+
+  // A promise-based function for retrieving the data that was just written
+  // to the P2WDB. This function is loaded into the Retry Queue, so that it
+  // is automatically retried until it succeeds.
+  async getJsonFromP2wdb (inObj) {
+    // Exract the input arguments from the input object.
+    const { zcid } = inObj
+
+    // Get the entry from the P2WDB.
+    const options = {
+      method: 'GET',
+      url: `${this.serverURL}/entry/hash/${zcid}`
+    }
+    const result = await this.axios.request(options)
+    const entry = result.data.data
+    console.log('entry: ', entry)
+
+    // Isolate the data.
+    const data = entry.value.data
+
+    return data
   }
 
   // DRY error handler
