@@ -9,7 +9,7 @@ import axios from 'axios'
 import RetryQueue from '@chris.troutner/retry-queue'
 
 // Local libraries
-import config from '../../../config/index.js'
+import config from '../../config/index.js'
 
 class PinUseCases {
   constructor (localConfig = {}) {
@@ -25,6 +25,9 @@ class PinUseCases {
     this.axios = axios
     this.retryQueue = new RetryQueue()
     this.config = config
+
+    // Bind 'this' object to functions that lose context.
+    this.getJsonFromP2wdb = this.getJsonFromP2wdb.bind(this)
   }
 
   // Given a CID, pin it with the IPFS node attached to this app.
