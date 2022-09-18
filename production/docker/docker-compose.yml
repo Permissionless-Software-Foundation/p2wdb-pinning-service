@@ -97,7 +97,7 @@ services:
 
   pin-service:
     #build: ./pin-service/
-    image: christroutner/p2wdb-pin-service:v2.0.4
+    image: christroutner/p2wdb-pin-service:v2.0.6
     container_name: pin-service
     logging:
       driver: 'json-file'
