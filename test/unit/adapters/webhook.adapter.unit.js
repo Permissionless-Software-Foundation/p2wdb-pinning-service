@@ -65,4 +65,68 @@ describe('#Webhook-Adapter', () => {
       assert.isString(result.id)
     })
   })
+
+  describe('#deleteWebhook', () => {
+    it('should delete a webhook', async () => {
+      // Mock dependencies and force desired code path
+      sandbox.stub(uut.axios, 'delete').resolves({ data: true })
+
+      const url = 'fake-url'
+
+      const result = await uut.deleteWebhook(url)
+
+      assert.equal(result, true)
+    })
+
+    it('should catch and throw errors', async () => {
+      try {
+        // Mock dependencies and force desired code path
+        sandbox.stub(uut.axios, 'delete').rejects(new Error('test error'))
+
+        await uut.deleteWebhook('fake-url')
+
+        assert.fail('unexpected code path')
+      } catch (err) {
+        assert.include(err.message, 'test error')
+      }
+    })
+
+    it('should throw error url is not included', async () => {
+      try {
+        await uut.deleteWebhook()
+
+        assert.fail('unexpected code path')
+      } catch (err) {
+        assert.include(err.message, 'url must be a string')
+      }
+    })
+  })
+
+  describe('#waitUntilSuccess', () => {
+    it('should return true when webhook is successfully established', async () => {
+      // Mock dependencies and force desired code path
+      sandbox.stub(uut, 'deleteWebhook').resolves()
+      uut.webhookWaitPeriod = 1
+      sandbox.stub(uut, 'createWebhook')
+        .onCall(0).rejects('not found')
+        .onCall(1).resolves()
+
+      const result = await uut.waitUntilSuccess('fake-url')
+
+      assert.equal(result, true)
+    })
+
+    it('should continue if deleting the webhook fails', async () => {
+      // Mock dependencies and force desired code path
+      sandbox.stub(uut, 'deleteWebhook').rejects(new Error('test error'))
+      uut.webhookWaitPeriod = 1
+      sandbox.stub(uut, 'createWebhook')
+        .onCall(0).rejects('not found')
+        .onCall(1).resolves()
+
+      const result = await uut.waitUntilSuccess('fake-url')
+
+      assert.equal(result, true)
+    })
+  })
 })

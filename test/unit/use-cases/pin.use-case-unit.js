@@ -64,6 +64,19 @@ describe('#users-use-case', () => {
 
       assert.equal(result, false)
     })
+
+    it('should catch and throw errors', async () => {
+      try {
+        // Mock dependencies and force desired code path
+        sandbox.stub(uut.adapters.ipfs.ipfs.files, 'stat').rejects(new Error('test error'))
+
+        await uut.validateCid()
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.equal(err.message, 'test error')
+      }
+    })
   })
 
   describe('#pinCid', () => {
@@ -88,6 +101,87 @@ describe('#users-use-case', () => {
       const result = await uut.pinCid(cid)
 
       assert.equal(result, true)
+    })
+
+    it('should catch and throw errors', async () => {
+      try {
+        // Mock dependencies and force desired code path
+        sandbox.stub(uut, 'validateCid').rejects(new Error('test error'))
+
+        await uut.pinCid()
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.equal(err.message, 'test error')
+      }
+    })
+  })
+
+  describe('#getJsonFromP2wdb', () => {
+    it('should retrieve an entry from the P2WDB', async () => {
+      const inObj = {
+        zcid: 'fake-cid'
+      }
+
+      // Mock dependencies and force desired code path
+      sandbox.stub(uut.axios, 'request').resolves({
+        data: {
+          data: {
+            value: {
+              data: {
+                foo: 'bar'
+              }
+            }
+          }
+        }
+      })
+
+      const result = await uut.getJsonFromP2wdb(inObj)
+      // console.log('result: ', result)
+
+      assert.equal(result.foo, 'bar')
+    })
+  })
+
+  describe('#pinJson', () => {
+    it('should pin JSON stored in the P2WDB and return the CID', async () => {
+      // Mock dependencies and force desired code path
+      sandbox.stub(uut.retryQueue, 'addToQueue').resolves('{"data": {"foo": "bar"}}')
+      sandbox.stub(uut.adapters.ipfs.ipfs, 'add').resolves({ cid: 'fake-cid' })
+
+      const zcid = 'fake-zcid'
+
+      const result = await uut.pinJson(zcid)
+
+      assert.equal(result, 'fake-cid')
+    })
+
+    it('should catch and throw errors', async () => {
+      try {
+        // Mock dependencies and force desired code path
+        sandbox.stub(uut.retryQueue, 'addToQueue').rejects(new Error('test error'))
+
+        await uut.pinJson()
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.equal(err.message, 'test error')
+      }
+    })
+
+    it('should throw error if the P2WDB entry can be parsed into JSON', async () => {
+      try {
+        // Mock dependencies and force desired code path
+        sandbox.stub(uut.retryQueue, 'addToQueue').resolves('a string that does not parse')
+
+        const zcid = 'fake-zcid'
+
+        await uut.pinJson(zcid)
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'Could not parse P2WDB entry into a JSON object.')
+      }
     })
   })
 })

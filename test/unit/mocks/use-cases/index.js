@@ -34,9 +34,17 @@ class UserUseCaseMock {
 class UseCasesMock {
   constuctor(localConfig = {}) {
     // this.user = new UserUseCaseMock(localConfig)
+    // this.pin = {
+    //   pinCid: async () => {}
+    // }
   }
 
   user = new UserUseCaseMock()
+
+  pin = {
+    pinCid: async () => {},
+    pinJson: async () => {}
+  }
 }
 
 export default UseCasesMock;
