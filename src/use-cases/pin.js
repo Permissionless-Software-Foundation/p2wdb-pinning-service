@@ -8,6 +8,9 @@
 import axios from 'axios'
 import RetryQueue from '@chris.troutner/retry-queue'
 
+// Local libraries
+import config from '../../config/index.js'
+
 class PinUseCases {
   constructor (localConfig = {}) {
     // console.log('User localConfig: ', localConfig)
@@ -21,6 +24,10 @@ class PinUseCases {
     // Encapsulate dependencies
     this.axios = axios
     this.retryQueue = new RetryQueue()
+    this.config = config
+
+    // Bind 'this' object to functions that lose context.
+    this.getJsonFromP2wdb = this.getJsonFromP2wdb.bind(this)
   }
 
   // Given a CID, pin it with the IPFS node attached to this app.
@@ -101,7 +108,7 @@ class PinUseCases {
     // Get the entry from the P2WDB.
     const options = {
       method: 'GET',
-      url: `${this.serverURL}/entry/hash/${zcid}`
+      url: `${this.config.p2wdbServerUrl}/entry/hash/${zcid}`
     }
     const result = await this.axios.request(options)
     const entry = result.data.data

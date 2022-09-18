@@ -104,5 +104,5 @@ export default {
 
   // Used by pinning service.
   // Assuming this is running in a Docker container.
-  p2wdbServerUrl: process.env.P2WDB_SERVER_URL ? process.env.P2WDB_SERVER_URL : 'https://p2wdb.fullstack.cash'
+  p2wdbServerUrl: process.env.P2WDB_SERVER_URL ? process.env.P2WDB_SERVER_URL : 'https://p2wdb.fullstackcash.nl'
 }
