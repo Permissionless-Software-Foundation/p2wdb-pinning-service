@@ -38,9 +38,43 @@ class PinUseCases {
   }
 
   // Given an object, pin it with the IPFS node and return the CID.
-  async pinJson (jsonToPin) {
+  async pinJson (zcid) {
     try {
-      console.log('pinJson will pin this object: ', jsonToPin)
+      console.log('pinJson will pin the content in this P2WDB entry: ', zcid)
+
+      // // Get the entry from the P2WDB. Automatically retry if it fails.
+      // const data = await this.retryQueue.addToQueue(this.getJsonFromP2wdb, { zcid })
+      //
+      // // Convert the data from a string to JSON
+      // let entry2
+      // try {
+      //   entry2 = JSON.parse(data)
+      //   console.log('entry2: ', entry2)
+      // } catch (err) {
+      //   throw new Error('Could not parse P2WDB entry into a JSON object.')
+      // }
+      //
+      // // Isolate the raw data
+      // const rawData = entry2.data
+      // console.log('rawData: ', rawData)
+      //
+      // // Create a FileObject
+      // // https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/FILES.md#ipfsadddata-options
+      // const file = {
+      //   path: '/data.json',
+      //   content: JSON.stringify(rawData)
+      // }
+      //
+      // const addOptions = {
+      //   cidVersion: 1,
+      //   wrapWithDirectory: true
+      // }
+      //
+      // // Add the file to IPFS.
+      // const ipfsResult = await this.adapters.ipfs.ipfs.add(file, addOptions)
+      // console.log('ipfsResult: ', ipfsResult)
+      //
+      // const cid = ipfsResult.cid.toString()
 
       return true
     } catch (err) {

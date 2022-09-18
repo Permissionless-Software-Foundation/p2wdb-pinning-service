@@ -41,7 +41,7 @@ class PinJsonRouter {
   attach (app) {
     if (!app) {
       throw new Error(
-        'Must pass app object when attached REST API controllers.'
+        'Must pass app object when attaching REST API controllers.'
       )
     }
 

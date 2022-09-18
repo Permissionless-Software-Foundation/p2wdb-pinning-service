@@ -44,7 +44,7 @@ class PinJsonRESTControllerLib {
     // bind 'this' object to event handlers
     this.handleError = this.handleError.bind(this)
     this.routeWebhook = this.routeWebhook.bind(this)
-    this.getJsonFromP2wdb = this.getJsonFromP2wdb.bind(this)
+    // this.getJsonFromP2wdb = this.getJsonFromP2wdb.bind(this)
   }
 
   // No api-doc documentation because this wont be a public endpoint
@@ -64,39 +64,7 @@ class PinJsonRESTControllerLib {
         throw new Error('P2WDB CID must be included with property zcid')
       }
 
-      // Get the entry from the P2WDB. Automatically retry if it fails.
-      const data = await this.retryQueue.addToQueue(this.getJsonFromP2wdb, { zcid })
-
-      // Convert the data from a string to JSON
-      let entry2
-      try {
-        entry2 = JSON.parse(data)
-        console.log('entry2: ', entry2)
-      } catch (err) {
-        throw new Error('Could not parse P2WDB entry into a JSON object.')
-      }
-
-      // Isolate the raw data
-      const rawData = entry2.data
-      console.log('rawData: ', rawData)
-
-      // Create a FileObject
-      // https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/FILES.md#ipfsadddata-options
-      const file = {
-        path: '/data.json',
-        content: JSON.stringify(rawData)
-      }
-
-      const addOptions = {
-        cidVersion: 1,
-        wrapWithDirectory: true
-      }
-
-      // Add the file to IPFS.
-      const ipfsResult = await this.adapters.ipfs.ipfs.add(file, addOptions)
-      console.log('ipfsResult: ', ipfsResult)
-
-      const cid = ipfsResult.cid.toString()
+      const cid = await this.useCases.pin.pinJson(zcid)
 
       const status = true
 
@@ -112,43 +80,21 @@ class PinJsonRESTControllerLib {
     }
   }
 
-  // A promise-based function for retrieving the data that was just written
-  // to the P2WDB. This function is loaded into the Retry Queue, so that it
-  // is automatically retried until it succeeds.
-  async getJsonFromP2wdb (inObj) {
-    // Exract the input arguments from the input object.
-    const { zcid } = inObj
-
-    // Get the entry from the P2WDB.
-    const options = {
-      method: 'GET',
-      url: `${this.serverURL}/entry/hash/${zcid}`
-    }
-    const result = await this.axios.request(options)
-    const entry = result.data.data
-    console.log('entry: ', entry)
-
-    // Isolate the data.
-    const data = entry.value.data
-
-    return data
-  }
-
   // DRY error handler
   handleError (ctx, err) {
     console.log('err', err)
 
     // If an HTTP status is specified by the buisiness logic, use that.
-    if (err.status) {
-      if (err.message) {
-        ctx.throw(err.status, err.message)
-      } else {
-        ctx.throw(err.status)
-      }
-    } else {
-      // By default use a 422 error if the HTTP status is not specified.
-      ctx.throw(422, err.message)
-    }
+    // if (err.status) {
+    //   if (err.message) {
+    //     ctx.throw(err.status, err.message)
+    //   } else {
+    //     ctx.throw(err.status)
+    //   }
+    // } else {
+    // By default use a 422 error if the HTTP status is not specified.
+    ctx.throw(422, err.message)
+    // }
   }
 }
 
