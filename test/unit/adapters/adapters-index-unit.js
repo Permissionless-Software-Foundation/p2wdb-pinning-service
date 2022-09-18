@@ -29,7 +29,9 @@ describe('#adapters', () => {
       uut.config.getJwtAtStartup = true
       sandbox.stub(uut.fullStackJwt, 'getJWT').resolves()
       sandbox.stub(uut.fullStackJwt, 'instanceBchjs').resolves()
+      uut.config.env = 'not-test'
       sandbox.stub(uut.ipfs, 'start').resolves()
+      sandbox.stub(uut.webhook, 'waitUntilSuccess').resolves()
 
       const result = await uut.start()
 

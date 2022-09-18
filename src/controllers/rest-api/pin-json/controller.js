@@ -4,10 +4,6 @@
   to the proper handler.
 */
 
-// Global npm libraries
-import axios from 'axios'
-import RetryQueue from '@chris.troutner/retry-queue'
-
 // Local libraries
 import config from '../../../../config/index.js'
 
@@ -36,10 +32,6 @@ class PinJsonRESTControllerLib {
 
     // this.serverURL = 'http://localhost:5010'
     this.serverURL = config.p2wdbServerUrl
-
-    // Encapsulate dependencies
-    this.axios = axios
-    this.retryQueue = new RetryQueue()
 
     // bind 'this' object to event handlers
     this.handleError = this.handleError.bind(this)

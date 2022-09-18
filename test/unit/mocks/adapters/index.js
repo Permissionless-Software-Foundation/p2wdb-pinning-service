@@ -10,7 +10,8 @@ class IpfsAdapter {
       },
       pin: {
         add: () => {}
-      }
+      },
+      add: async () => {}
     }
   }
 }
