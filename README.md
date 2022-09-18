@@ -6,10 +6,10 @@
 
 This IPFS pinning service is an extension to the [P2WDB](https://github.com/Permissionless-Software-Foundation/ipfs-p2wdb-service) service. It uses the webhook feature of P2WDB to monitor for entries that instruct it to pin a content ID (CID) that represents a file on IPFS. The same IPFS node the runs P2WDB also pins the CID.
 
-Pinning fees are paid in [PSF tokens](https://psfoundation.cash). The price of pinning files is set by the [PSF Minting Council](https://psfoundation.info). The fee is currently set at a rate of:
+Pinning fees are paid in [PSF tokens](https://psfoundation.cash). The price of pinning files is set by the [PSF Minting Council](https://psfoundation.info/governance#the-minting-council). The fee is currently set at a rate of around:
 - $0.01 USD per megabyte
 
-Like data on the P2WDB, they slowly fall off the network after a year. So data is guaranteed to be pinned by nodes on the network for at least one year.
+Like data on the P2WDB, pinned data falls off the network after a year. So data is guaranteed to be pinned by nodes on the network for at least one year.
 
 ## Usage
 

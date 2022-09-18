@@ -14,17 +14,17 @@ The P2WDB Pinning Service currently provides two services:
 
 - The data passed from the P2WDB to the pinning service will includes an IPFS CID to be pinned.
 
-- Each instance of p2wdb-pinning-service will evaluate the data independently. Default payment will be set at $0.01 per megabyte by the PSF Minting Council. **Currently, only files 1MB or smaller are supported**.
+- Each instance of p2wdb-pinning-service will evaluate the data independently. Default payment will be set at $0.01 per megabyte by the [PSF Minting Council](https://psfoundation.info/governance#the-minting-council). **Currently, only files 1MB or smaller are supported**.
 
-- Like the data in the P2WDB, new instances entering the network will ignore entries older than a year. So data will naturally fall off the network after about a year.
+- Like the data in the P2WDB, new instances entering the network will ignore entries older than a year. So data will naturally and slowly fall off the network after about a year.
 
-- If this pinning service is popular enough, it can fund bounties to encourage people to run more instances of p2wdb-pinning-service.
+- If this pinning service is popular enough, it can fund bounties to encourage members of the PSF to run more instances of p2wdb-pinning-service.
 
 ### Pinning JSON Data
-- There is frequently a need to upload arbitrary JSON data to the IPFS network. Like any other file, this data is passed around as a CID.
+- There is frequently a need to upload arbitrary JSON data to the IPFS network. Like any other file on IPFS, this data is passed around as a CID.
 
 - If the JSON already exists in the P2WDB, this app can retrieve that data and pin it separately to the IPFS node.
 
 - Given a P2WDB zcid (P2WDB CID's start with the letter 'z'), the REST API endpoint will fetch the JSON data from the P2WDB, pin it, and return the IPFS CID for that data.
 
-- The pinning of the JSON data is only done by the single node. A second P2WDB entry must be made to pin that CID across the cluster of IPFS nodes running this p2wdb-pinning-service.
+- The pinning of the JSON data is only done by the single node. A second P2WDB entry must be made to pin that CID across the cluster of IPFS nodes running this p2wdb-pinning-service software.
