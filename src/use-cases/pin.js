@@ -33,7 +33,7 @@ class PinUseCases {
   // Given a CID, pin it with the IPFS node attached to this app.
   async pinCid (cid) {
     try {
-      console.log(`Pinning CID: ${cid}`)
+      console.log(`Attempting to pinning CID: ${cid}`)
 
       // Verify the CID meets requirements for pinning.
       const isValid = await this.validateCid(cid)

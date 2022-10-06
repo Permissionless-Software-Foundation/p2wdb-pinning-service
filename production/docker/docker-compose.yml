@@ -21,7 +21,7 @@ services:
     #  dockerfile: Dockerfile
     container_name: ipfs
     environment:
-      IPFS_DAEMON_ARGUMENTS: '--enable-pubsub-experiment --migrate=true --agent-version-suffix=docker --routing=dhtclient'
+      IPFS_DAEMON_ARGUMENTS: '--enable-pubsub-experiment --migrate=true --agent-version-suffix=docker --routing=dhtclient --enable-gc'
       UPLOAD_KBPS: '1000'
       DOWNLOAD_KBPS: '1000'
     logging:
@@ -34,7 +34,7 @@ services:
       - 4001:4001
       - 4003:4003
       - 172.17.0.1:5001:5001
-      - 172.17.0.1:8080:8080
+      - 8080:8080
     command: [
       './start-ipfs.sh'
     ]
@@ -46,7 +46,7 @@ services:
     #build:
     #  context: ./p2wdb/
     #  dockerfile: Dockerfile
-    image: christroutner/p2wdb:v3.1.5
+    image: christroutner/p2wdb:v3.1.8
     container_name: p2wdb
     environment:
       CONSUMER_URL: 'https://free-bch.fullstack.cash'
