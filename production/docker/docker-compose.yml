@@ -46,11 +46,12 @@ services:
     #build:
     #  context: ./p2wdb/
     #  dockerfile: Dockerfile
-    image: christroutner/p2wdb:v3.1.8
+    image: christroutner/p2wdb:v3.2.0
     container_name: p2wdb
     environment:
       CONSUMER_URL: 'https://free-bch.fullstack.cash'
       DEBUG_LEVEL: 1
+      #ENABLE_BCH_PAYMENT: 1
     logging:
       driver: 'json-file'
       options:
@@ -68,6 +69,7 @@ services:
     volumes:
       - ../data/ipfsdata/p2wdb:/home/safeuser/ipfs-p2wdb-service/.ipfsdata/p2wdb
       - ./p2wdb/start-production.sh:/home/safeuser/ipfs-p2wdb-service/start-production.sh
+      #- ../../wallet.json:/home/safeuser/ipfs-p2wdb-service/wallet.json
     restart: always
 
   # (Optional) This contain can be commented out. It provides v1 Circuit Relay
@@ -96,8 +98,8 @@ services:
     restart: always
 
   pin-service:
-    #build: ./pin-service/
-    image: christroutner/p2wdb-pin-service:v2.0.6
+    build: ./pin-service/
+    #image: christroutner/p2wdb-pin-service:v2.0.6
     container_name: pin-service
     logging:
       driver: 'json-file'
