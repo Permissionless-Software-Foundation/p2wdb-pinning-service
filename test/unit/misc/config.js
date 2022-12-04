@@ -39,7 +39,7 @@ describe('#config', () => {
   })
 
   it('Should return test environment config', async () => {
-    process.env.SVC_ENV = 'prod'
+    process.env.SVC_ENV = 'production'
 
     const importedConfig3 = await import('../../../config/index.js?foo=bar2')
     const config = importedConfig3.default
