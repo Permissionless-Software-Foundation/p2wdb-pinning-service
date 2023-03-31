@@ -123,6 +123,9 @@ class PinUseCases {
   // Validate the CID by ensuring it meets the requirements for pinning.
   async validateCid (cid) {
     try {
+      const now = new Date()
+      console.log(`${now.toISOString()}`)
+
       // Get the filesize of the CID
       const fileStats = await this.adapters.ipfs.ipfs.files.stat(`/ipfs/${cid}`)
       console.log('fileStats: ', fileStats)

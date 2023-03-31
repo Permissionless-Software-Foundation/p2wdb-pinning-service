@@ -46,7 +46,7 @@ services:
     #build:
     #  context: ./p2wdb/
     #  dockerfile: Dockerfile
-    image: christroutner/p2wdb:v3.3.8
+    image: christroutner/p2wdb:v3.4.2
     container_name: p2wdb
     environment:
       CONSUMER_URL: 'https://free-bch.fullstack.cash'
@@ -99,7 +99,7 @@ services:
 
   pin-service:
     #build: ./pin-service/
-    image: christroutner/p2wdb-pin-service:v2.0.7
+    image: christroutner/p2wdb-pin-service:v2.0.8
     container_name: pin-service
     logging:
       driver: 'json-file'
