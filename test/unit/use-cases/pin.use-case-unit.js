@@ -81,10 +81,13 @@ describe('#users-use-case', () => {
 
   describe('#pinCid', () => {
     it('should return false if file is too big', async () => {
-      const cid = 'bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta'
-
-      // Mock dependencies
+      // Mock dependencies and force desired code path.
+      sandbox.stub(uut.adapters.ipfs.ipfs, 'get').resolves()
+      sandbox.stub(uut.adapters.ipfs.ipfs.pin, 'add').resolves()
+      sandbox.stub(uut.adapters.ipfs.ipfs.pin, 'rm').resolves()
       sandbox.stub(uut, 'validateCid').resolves(false)
+
+      const cid = 'bafybeidmxb6au63p6t7wxglks3t6rxgt6t26f3gx26ezamenznkjdnwqta'
 
       const result = await uut.pinCid(cid)
 

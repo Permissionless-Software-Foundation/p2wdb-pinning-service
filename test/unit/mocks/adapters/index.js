@@ -9,9 +9,11 @@ class IpfsAdapter {
         stat: () => {}
       },
       pin: {
-        add: () => {}
+        add: async () => {},
+        rm: async () => {}
       },
-      add: async () => {}
+      add: async () => {},
+      get: async () => {}
     }
   }
 }
