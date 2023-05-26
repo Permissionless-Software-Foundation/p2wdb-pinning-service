@@ -32,20 +32,33 @@ class PinUseCases {
 
   // Given a CID, pin it with the IPFS node attached to this app.
   async pinCid (cid) {
+    // CT 5/26/23: The validation process (of checking the files size) can
+    // take an extremely long time to complete. This function was heavily
+    // refactored to take this into account. The file is assumed valid and
+    // pinned, and then unpinned if it fails validation.
+
     try {
       console.log(`Attempting to pinning CID: ${cid}`)
 
+      // Get the file so that we have it locally.
+      console.log(`Getting file ${cid}`)
+      await this.adapters.ipfs.ipfs.get(cid)
+      console.log('File retrieved.')
+
+      // Pin the file (assume valid)
+      await this.adapters.ipfs.ipfs.pin.add(cid)
+      console.log(`Pinned file ${cid}`)
+
       // Verify the CID meets requirements for pinning.
       const isValid = await this.validateCid(cid)
-      if (isValid) {
-        await this.adapters.ipfs.ipfs.pin.add(cid)
-        console.log('File pinned successfully.')
-
-        return true
+      if (!isValid) {
+        // If the file does meet the size requirements, then unpin it.
+        console.log(`File ${cid} is bigger than a megabyte. Unpinning file.`)
+        await this.adapters.ipfs.ipfs.pin.rm(cid)
+        return false
       }
 
-      console.log('File bigger than a megabyte. Not pinning.')
-      return false
+      return true
     } catch (err) {
       console.error('Error in pinCid()')
       throw err
@@ -127,7 +140,10 @@ class PinUseCases {
       console.log(`${now.toISOString()}`)
 
       // Get the filesize of the CID
-      const fileStats = await this.adapters.ipfs.ipfs.files.stat(`/ipfs/${cid}`)
+      const options = {
+        size: true
+      }
+      const fileStats = await this.adapters.ipfs.ipfs.files.stat(`/ipfs/${cid}`, options)
       console.log('fileStats: ', fileStats)
 
       /*
@@ -152,7 +168,7 @@ class PinUseCases {
 
       return false
     } catch (err) {
-      console.error('Error in validateCid()')
+      console.error('Error in validateCid(): ', err)
       throw err
     }
   }

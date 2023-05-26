@@ -4,7 +4,7 @@
 # defined by running an external go-ipfs node.
 
 # Ports
-export PORT=5010 # REST API port
+export PORT=5021 # REST API port
 
 # The human-readible name that is used when displaying data about this node.
 export COORD_NAME=ipfs-service-provider-generic
