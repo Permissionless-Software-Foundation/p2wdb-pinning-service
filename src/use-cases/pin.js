@@ -41,6 +41,10 @@ class PinUseCases {
         await this.adapters.ipfs.ipfs.pin.add(cid)
         console.log('File pinned successfully.')
 
+        // Issue a get command, so that this node also gets the content. But do
+        // not await, so that the command does not block execution.
+        this.adapters.ipfs.ipfs.get(cid)
+
         return true
       }
 
