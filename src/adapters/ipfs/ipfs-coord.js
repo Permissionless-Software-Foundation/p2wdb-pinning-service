@@ -32,9 +32,13 @@ class IpfsCoordAdapter {
     this.IpfsCoord = IpfsCoord
     this.ipfsCoord = {}
     // this.bchjs = new BCHJS()
-    this.wallet = new SlpWallet()
+    //this.wallet = new SlpWallet()
     this.config = config
     this.publicIp = publicIp
+    this.wallet = new SlpWallet(undefined, {
+      authPass: config.authPass,
+      restURL: config.apiServer
+    })
 
     // Properties of this class instance.
     this.isReady = false
